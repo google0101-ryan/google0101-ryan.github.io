@@ -1,5 +1,3 @@
-Here you can say lots of fun things about your site.
+This blog will be dedicated to my various adventures in OS dev, emudev, and game programming, along with whatever other thing catches my fancy.
 
-Maybe say a some things about yourself.
-
-Or maybe what you plan to blog about.
+I intend to use this blog as a source of information for anyone who wants to try a similar project.
