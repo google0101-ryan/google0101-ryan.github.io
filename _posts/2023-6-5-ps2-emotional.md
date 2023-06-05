@@ -1,14 +1,15 @@
 ## Writing a PS2 emulator, the guide: Part 1, an intro to the hardware
 
-So, I thought that a great first idea for a blog post was a Simias-style guide for writing a PS2 emulator in c++. In this multi-part series, I'll do my best to walk whoever is reading this through the begginings of a PS2 emulator all the way to first output running the 3-stars demo.
+So, I thought that a great first idea for a blog post was a Simias-style guide for writing a PS2 emulator in C++. In this multi-part series, I'll do my best to walk whoever is reading this through the begginings of a PS2 emulator all the way to first output running the 3-stars demo.
 
-A word of warning before we dive in: It will take a *lot* of work to follow this. The PS2 is not a simple beast, and acheiving any sort of speed is very difficult, requiring a ton of optimizations. But, if you stick with it, it is an incredibly rewarding experience. A word of warning, you will need to have at least a passing familiarity with MIPS before you start, along with some experience writing emulators.
+A word of warning before we dive in: It will take a *lot* of work to follow this. The PS2 is not a simple beast, and achieving any sort of speed is very difficult, requiring a ton of optimizations. But, if you stick with it, it is an incredibly rewarding experience. A word of warning, you will need to have at least a passing familiarity with MIPS before you start, along with some experience writing emulators.
 
 # The hardware
 
 The PS2 is very well known, and one of the best selling video game consoles of all time. But what makes it tick under the hood? Let's take a look.
 
 ![A shot of the Emotion Engine's die](/images/ee.jpg)
+<font size=1><span style="color:grey">Credit: wikipedia.com</span></font>
 
 First off, there is the Emotion Engine (EE). It's a custom MIPS-based RISC core clocked at about 295Mhz. It's based upon the MIPS r59000, and it implements MIPS-III and most of the MIPS-IV ISA. It has also been modified to support 128-bit integers, along with an entirely new SIMD instruction set dubbed "MMI" by Sony. It's quite a lot of power packed into one chip, but it would be useless without accelerators. So, alongside the standard cop0 for exceptions, Sony also included a FPU on cop1 for single-precision floating-point math, and a 128-bit SIMD coprocessor known as Vector Unit 0, or VU0, on cop2.
 
