@@ -1,4 +1,4 @@
-## Writing a PS2 emulator, the guide
+## Writing a PS2 emulator, the guide: Part 1, an intro to the hardware
 
 So, I thought that a great first idea for a blog post was a Simias-style guide for writing a PS2 emulator in c++. In this multi-part series, I'll do my best to walk whoever is reading this through the begginings of a PS2 emulator all the way to first output running the 3-stars demo.
 
@@ -26,23 +26,4 @@ You may have noticed one thing that is conspicuously absent: access to periphera
 
 The two processors communicate using an RPC connection via a two-way hardware FIFO and a series of registers collectively referred to as the Subsystem InterFace. Using DMA transfers, the two can communicate rather quickly, allowing the IOP to rapidly send data wherever the EE needs it.
 
-With all that out of the way, let's start writing some code! First, you'll need to get your hands on a BIOS file, preferably `scph10000.bin`. This is the file I'll be using, but you could use one of the other ones. However, those will require an implementation of the EE's timers, which I'll not be covering here.
-
-# Finally, some code
-So, let's start writing some code. I'm going to skip past the mundane stuff like loading the BIOS file into an array. I'm going to assume your BIOS is loaded into a 2MB array named `bios`.
-
-So, let's start by defining our `EmotionEngine` class. This will represent the main CPU core, minus VU0.
-
-```cpp
-class EmotionEngine
-{
-private:
-    uint32_t pc; // This points to the current instruction
-    uint32_t next_pc; // This points to the next instruction
-public:
-    EmotionEngine() {Reset();}
-
-    void Reset();
-};
-```
-`emotion.hpp`
+And with that, part 1 comes to a close. In the next part, we'll actually start writing some code! I hope you enjoyed, and see you next time.
