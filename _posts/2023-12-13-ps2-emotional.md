@@ -10,7 +10,7 @@ We'll be developing this emulator in C++, but it could easily be adapted to a va
 You'll also need at least a passing experience with both emulation development and C++ programming, as this blog will become far too long if I explain all the basics.
 
 ## The BIOS ROM
-Before we can begin, you'll need a copy of the 4MB BIOS used in the PlayStation 2. There are several different revisions, but I've found the easiest to boot initially is a strange Japanese prototype BIOS called 'SCPH10000.BIN'. Of course, I can't legally share this ROM, so you'll have to dump it for yourself from a console or do a bit of digging on the internet.
+Before we can begin, you'll need a copy of the 4 MB BIOS used in the PlayStation 2. There are several different revisions, but I've found the easiest to boot initially is a strange Japanese prototype BIOS called 'SCPH10000.BIN'. Of course, I can't legally share this ROM, so you'll have to dump it for yourself from a console or do a bit of digging on the internet.
 
 Now, let's set up our directory structure:
 
@@ -35,7 +35,7 @@ void Init(std::string biosName);
 }
 ```
 
-So, first we begin with our standard include functions. No surprised there.
+So, first we begin with our standard include functions. No surprises there.
 
 Next, we define `Bus` as a namespace. I believe that too much OOP is a bad thing, so we'll be defining a decent chunk of our codebase in namespaces.
 
@@ -137,7 +137,7 @@ make -j$(nproc -a)
 
 Try it out by typing `./ps2` followed by your BIOS file name. It should work!
 
-Now we can start defining our Emotion Engine. First, we'll need to add a `Read32()` function to `Bus`, as instructions on the PS2 are 32-bits long.
+Now we can start defining our Emotion Engine. First, we'll need to add a `Read32()` function to `Bus`, as instructions on the PS2 are 32 bits long.
 
 ```c++
 // In Bus.h
@@ -181,7 +181,7 @@ uint32_t TranslateAddress(uint32_t addr)
 }
 ```
 
-Next, let's fill out our `Read32()` function to allow reading from the BIOS, which is mapped starting at `0x1fc00000 - 0x20000000 (4MB)`:
+Next, let's fill out our `Read32()` function to allow reading from the BIOS, which is mapped starting at `0x1fc00000 - 0x20000000 (4 MB)`:
 
 ```c++
 uint32_t Read32(uint32_t addr)
@@ -196,7 +196,7 @@ uint32_t Read32(uint32_t addr)
 }
 ```
 
-We do a bitwise `and` on the address with 4MB-1 to truncate the address to the proper offset within the BIOS.
+We do a bitwise `and` on the address with `0x3FFFFF` (4 MB - 1) to truncate the address to the proper offset within the BIOS.
 
 Now, let's make our EmotionEngine namespace. Make a new folder under `src` named `cpu`, and then make a new folder under that named `ee`. Create `EmotionEngine.h` and `EmotionEngine.cpp`.
 
@@ -233,9 +233,9 @@ namespace EmotionEngine
 ```
 
 So, let's take a look at how a MIPS processor is laid out:
-- First, there are 32 128-bit general purpose register
+- First, there are 32 128-bit general purpose registers
 - There is a 32-bit PC that keeps track of the current instruction
-- There are three coprocessors, which are accessed through the `mtc0` and `mfc0` instructions. 
+- There are three coprocessors, which are accessed through the `mtcN` and `mfcN` instructions (where N is any of 0, 1 or 2). 
 - Branches take one extra instruction to take effect, leading to an extra instruction being executed after a branch. This is called a "branch delay slot"
 
 So, let's implement some of this:
