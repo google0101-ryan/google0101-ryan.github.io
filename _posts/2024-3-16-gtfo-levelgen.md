@@ -39,11 +39,11 @@ This class is used for everything from item names to the IP address used for ter
 # `LG_LevelBuilder` handoff
 
 The bulk of actual generation happens when `Builder` calls `LG_LevelBuilder.BuildFloor()`. The first thing this function does is call `SetupStartRotation()`, which picks a random number between one and four using the `BuildSeed`. It maps like this:  
-| Number| Direction	|
-|---	|---------	|
-| 0 	| Forward 	|
-| 1 	| Back    	|
-| 2 	| Right   	|
+| Number| Direction	|  
+|---	|---------	|  
+| 0 	| Forward 	|  
+| 1 	| Back    	|  
+| 2 	| Right   	|  
 | 3 	| Left    	|  
 
 EDIT: However, it seems that the `switch` is hardcoded to 0, which means it always defaults to Forward.
@@ -81,3 +81,6 @@ This one is a bit more complicated. Each zone has a list of potential areas atta
 
 # `LG_Area.Setup()`
 
+Each area contains a list of two things: gates and plugs. These are both kinds of transitions between areas in a level. The difference is that a gate is a transition that uses a roller door, while a plug uses things like archways or holes in the wall. Both of them inherit from `LG_ZoneExpander`. All this does is loop through each of them and add them to either `m_gates`, or `plugList` (which is an output variable that gets passed back up). It also adds all of them to a list of `LG_ZoneExpanders` called `m_zoneExpanders`. Each of these also has there `m_linksFrom` set to the area.
+
+After all of this, it returns back up to `LG_SetupFloor.Build()`. From here, it calls `LG_FloorTransition.SetPlaced()`, which calls the base class method `LG_Geomorph.SetPlaced()`, which loops through every plug and calls `SetPlaced()` on them. 
